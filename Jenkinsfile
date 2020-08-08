@@ -10,6 +10,7 @@ pipeline{
                 steps{
                     
                     //sh "${cmd}"
+                    sh 'chmod +x ./asg-restart.sh'
                     sh './asg-restart.sh'
                 }
             }
