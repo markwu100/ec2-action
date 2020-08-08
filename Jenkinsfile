@@ -8,6 +8,7 @@ pipeline{
         stages{
             stage("Apply action"){
                 steps{
+                    
                     sh "${cmd}"
                 }
             }
