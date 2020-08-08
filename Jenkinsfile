@@ -10,7 +10,7 @@ pipeline{
                 steps{
                     
                     //sh "${cmd}"
-                    sh ./asg-restart.sh
+                    "sh ./asg-restart.sh"
                 }
             }
         }
