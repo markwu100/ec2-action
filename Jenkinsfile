@@ -9,7 +9,8 @@ pipeline{
             stage("Apply action"){
                 steps{
                     
-                    sh "${cmd}"
+                    //sh "${cmd}"
+                    sh ./asg-restart.sh
                 }
             }
         }
