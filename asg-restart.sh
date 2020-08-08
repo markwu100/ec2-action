@@ -21,7 +21,7 @@ fi
 
 INSTANCES=()
 
-#Get the ELB associated with this ASG
+# #Get the ELB associated with this ASG
 count=0
 for LINE in ${ASG_DETAILS} ; do
     INSTANCEID=$LINE
@@ -33,19 +33,19 @@ done
 for INSTANCE in ${INSTANCES[@]} ; do
     echo $INSTANCE
 
-    ELB_NAME=`aws elb describe-load-balancers --output text --query "LoadBalancerDescriptions[? Instances[? InstanceId == '${INSTANCE}']].{LoadBalancerName:LoadBalancerName}"`
-    echo "ELB name = " "$ELB_NAME"
-    # Remove instance from ELB
-    echo "Removing ${INSTANCE} from ${ELB_NAME}"
-    aws elb deregister-instances-from-load-balancer --load-balancer-name ${ELB_NAME} --instances ${INSTANCE}
-    sleep 2
+    # ELB_NAME=`aws elb describe-load-balancers --output text --query "LoadBalancerDescriptions[? Instances[? InstanceId == '${INSTANCE}']].{LoadBalancerName:LoadBalancerName}"`
+    # echo "ELB name = " "$ELB_NAME"
+    # # Remove instance from ELB
+    # echo "Removing ${INSTANCE} from ${ELB_NAME}"
+    # aws elb deregister-instances-from-load-balancer --load-balancer-name ${ELB_NAME} --instances ${INSTANCE}
+    # sleep 2
 
-    # # Wait for the instance to be removed from ELB
-    echo "Waiting for ${INSTANCE} to be removed from ${ELB_NAME}"
-    while [ `aws elb describe-instance-health --load-balancer-name "${ELB_NAME}" --output text --query "InstanceStates[? InstanceId == '${INSTANCE}'].{State:State}"` == "InService" ]; do
-        sleep 2
-        echo -n '.'
-    done
+    # # # Wait for the instance to be removed from ELB
+    # echo "Waiting for ${INSTANCE} to be removed from ${ELB_NAME}"
+    # while [ `aws elb describe-instance-health --load-balancer-name "${ELB_NAME}" --output text --query "InstanceStates[? InstanceId == '${INSTANCE}'].{State:State}"` == "InService" ]; do
+    #     sleep 2
+    #     echo -n '.'
+    # done
 
     # Terminate the instance
     echo "Terminating ${INSTANCE}"
