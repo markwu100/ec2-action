@@ -11,7 +11,7 @@ pipeline{
                     
                     //sh "${cmd}"
                     sh 'chmod +x ./asg-restart.sh'
-                    sh './asg-restart.sh'
+                    sh './asg-restart.sh ${AUTOSCALING_GROUPS}'
                 }
             }
         }
