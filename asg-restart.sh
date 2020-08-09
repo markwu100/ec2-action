@@ -3,7 +3,7 @@
 # This script restarts each instance in an auto-scaling group, one at a time
 #
 
-#Pass in the argument of the name of all the auto-scaling grpup
+#Pass in the argument of the name of all the auto-scaling group
 AUTOSCALING_GROUPS=$@
 echo $AUTOSCALING_GROUPS
 
