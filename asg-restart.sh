@@ -1,24 +1,23 @@
 #!/bin/bash -e
 #
-# This script restarts each instance in an auto-scaling group, one at a time, removing the instance from the ELB as it goes
+# This script restarts each instance in an auto-scaling group, one at a time
 #
 
-#The name of the auto-scaling grpup
+#Pass in the argument of the name of all the auto-scaling grpup
 AUTOSCALING_GROUPS=$@
 echo $AUTOSCALING_GROUPS
 
 DELAY=300
 
+# Loop over each asg
 for ASG in $AUTOSCALING_GROUPS; do
     echo "Start to process Autoscaling Group $ASG"
 
 # Fetch details about the ASG
-# ASG_DETAILS=`aws autoscaling describe-auto-scaling-instances --output text --query "AutoScalingInstances[?AutoScalingGroupName == '${AUTOSCALING_GROUP}'].{InstanceId:InstanceId}"`
     ASG_DETAILS=`aws autoscaling describe-auto-scaling-instances --output text --query "AutoScalingInstances[?AutoScalingGroupName == '$ASG'].{InstanceId:InstanceId}"`
 
 #Check the ASG exists
     if [ "$ASG_DETAILS" == 'No AutoScalingGroups found' ]; then
-        #echo "Auto-scaling group '${AUTOSCALING_GROUP}' does not exist"
         echo "Auto-scaling group '$ASG' does not exist"
         exit 1
     fi
@@ -36,20 +35,6 @@ for ASG in $AUTOSCALING_GROUPS; do
 # Loop over each instance
     for INSTANCE in ${INSTANCES[@]} ; do
         echo $INSTANCE
-
-        # ELB_NAME=`aws elb describe-load-balancers --output text --query "LoadBalancerDescriptions[? Instances[? InstanceId == '${INSTANCE}']].{LoadBalancerName:LoadBalancerName}"`
-        # echo "ELB name = " "$ELB_NAME"
-        # # Remove instance from ELB
-        # echo "Removing ${INSTANCE} from ${ELB_NAME}"
-        # aws elb deregister-instances-from-load-balancer --load-balancer-name ${ELB_NAME} --instances ${INSTANCE}
-        # sleep 2
-
-        # # # Wait for the instance to be removed from ELB
-        # echo "Waiting for ${INSTANCE} to be removed from ${ELB_NAME}"
-        # while [ `aws elb describe-instance-health --load-balancer-name "${ELB_NAME}" --output text --query "InstanceStates[? InstanceId == '${INSTANCE}'].{State:State}"` == "InService" ]; do
-        #     sleep 2
-        #     echo -n '.'
-        # done
 
         # Terminate the instance
         echo "Terminating ${INSTANCE}"
