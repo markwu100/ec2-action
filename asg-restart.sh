@@ -4,7 +4,7 @@
 #
 
 #The name of the auto-scaling grpup
-AUTOSCALING_GROUPS='$1'
+AUTOSCALING_GROUPS='${AUTOSCALING_GROUPS}'
 
 DELAY=300
 
