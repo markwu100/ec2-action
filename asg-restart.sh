@@ -4,21 +4,21 @@
 #
 
 #The name of the auto-scaling grpup
-AUTOSCALING_GROUPS='demo-test demo-test1'
+AUTOSCALING_GROUPS='$1'
 
 DELAY=300
 
-for asg in $AUTOSCALING_GROUPS; do
-    echo $asg
+for ASG in $AUTOSCALING_GROUPS; do
+    echo "Start to process Autoscaling Group $ASG"
 
 # Fetch details about the ASG
 # ASG_DETAILS=`aws autoscaling describe-auto-scaling-instances --output text --query "AutoScalingInstances[?AutoScalingGroupName == '${AUTOSCALING_GROUP}'].{InstanceId:InstanceId}"`
-    ASG_DETAILS=`aws autoscaling describe-auto-scaling-instances --output text --query "AutoScalingInstances[?AutoScalingGroupName == '$asg'].{InstanceId:InstanceId}"`
+    ASG_DETAILS=`aws autoscaling describe-auto-scaling-instances --output text --query "AutoScalingInstances[?AutoScalingGroupName == '$ASG'].{InstanceId:InstanceId}"`
 
 #Check the ASG exists
     if [ "$ASG_DETAILS" == 'No AutoScalingGroups found' ]; then
         #echo "Auto-scaling group '${AUTOSCALING_GROUP}' does not exist"
-        echo "Auto-scaling group '$asg' does not exist"
+        echo "Auto-scaling group '$ASG' does not exist"
         exit 1
     fi
 
